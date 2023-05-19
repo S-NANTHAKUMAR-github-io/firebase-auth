@@ -5,23 +5,24 @@ import {
     signOut,
     onAuthStateChanged,
     GoogleAuthProvider,
-    signInWithPopup
+    signInWithPopup,
+    RecaptchaVerifier,    
 } from 'firebase/auth';
-import {auth} from '../firebase'
+import { auth } from '../firebase'
 
 
 const userAuthContext = createContext();
 
-export function UserAuthContextProvider({children}) {
-
+export function UserAuthContextProvider({ children }) {
+    // const auth = getAuth();
     const [user, setuser] = useState("")
 
-    function signUp(email,pasword){
+    function signUp(email, pasword) {
         return createUserWithEmailAndPassword(auth, email, pasword)
     }
 
-    function login(email,pasword){
-        console.log(email);
+    function login(email, pasword) {
+        // console.log(email);
         return signInWithEmailAndPassword(auth, email, pasword)
     }
 
@@ -29,23 +30,41 @@ export function UserAuthContextProvider({children}) {
         return signOut(auth)
     }
 
-    function googleSignIn(){
+    function googleSignIn() {
         const googleAuthProvider = new GoogleAuthProvider();
-        return signInWithPopup(auth,googleAuthProvider);
+        return signInWithPopup(auth, googleAuthProvider);
+    }
+
+    function setUpRecaptha(number) {
+        const recaptchaVerifier = new RecaptchaVerifier(
+            "recaptcha-container",
+            {},
+            auth
+        );
+        recaptchaVerifier.render();
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) =>{
-                setuser(currentUser)
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setuser(currentUser)
         });
         return () => {
             unsubscribe();
         }
     }, [])
-    
+
 
     return (
-        <userAuthContext.Provider value={{user,signUp,login,logOut,googleSignIn}}>
+        <userAuthContext.Provider 
+        value={{ 
+            user, 
+            signUp, 
+            login, 
+            logOut, 
+            googleSignIn, 
+            setUpRecaptha 
+            }}
+            >
             {children}
         </userAuthContext.Provider>
     )

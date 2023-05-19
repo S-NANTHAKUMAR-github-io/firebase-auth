@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {Link, useNavigate} from 'react-router-dom'
-import { Alert, Form} from "react-bootstrap";
+import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom'
+import { Alert, Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
@@ -10,19 +10,19 @@ const Login = () => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [Error, setError] = useState("");
-  const {login,googleSignIn} = useUserAuth();
+  const { login, googleSignIn } = useUserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      setError("")
-      try {
-        await login(Email, Password)
-        navigate("/home");
-        console.log(Email,Password);
-      } catch (error) {
-        setError(error.message)
-      }
+    e.preventDefault();
+    setError("")
+    try {
+      await login(Email, Password)
+      navigate("/home");
+      console.log(Email, Password);
+    } catch (error) {
+      setError(error.message)
+    }
   };
 
   const handleGoogleSignIn = async (e) => {
@@ -58,11 +58,7 @@ const Login = () => {
             />
           </Form.Group>
 
-          <div className="d-grid gap-2">
-            <Button variant="primary" type="Submit">
-              Log In
-            </Button>
-          </div>
+
         </Form>
         <hr />
         <div>
@@ -72,6 +68,14 @@ const Login = () => {
             onClick={handleGoogleSignIn}
           />
         </div>
+        {/* Phone Signup */}
+        <Link to="/phonesignup">
+          <div className="d-grid gap-2 mt-3">
+            <Button variant="success" type="Submit">
+              Sign in with phone
+            </Button>
+          </div>
+        </Link>
       </div>
       <div className="p-4 box mt-3 text-center">
         Don't have an account? <Link to="/signup">Sign up</Link>
