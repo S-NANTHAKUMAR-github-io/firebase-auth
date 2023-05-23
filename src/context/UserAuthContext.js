@@ -6,7 +6,8 @@ import {
     onAuthStateChanged,
     GoogleAuthProvider,
     signInWithPopup,
-    RecaptchaVerifier,    
+    RecaptchaVerifier,
+    signInWithPhoneNumber    
 } from 'firebase/auth';
 import { auth } from '../firebase'
 
@@ -42,6 +43,7 @@ export function UserAuthContextProvider({ children }) {
             auth
         );
         recaptchaVerifier.render();
+        return signInWithPhoneNumber(auth, number, recaptchaVerifier)
     }
 
     useEffect(() => {
